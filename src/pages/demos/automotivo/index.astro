@@ -1,0 +1,439 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import '../../../demos/automotivo/automotivo.css';
+import displayUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import monoUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+
+import heroDesk from '../../../assets/automotivo/hero-911-perfil.jpg';
+import heroMobile from '../../../assets/automotivo/hero-911-noite.jpg';
+import gtsLanterna from '../../../assets/automotivo/gts-lanterna.jpg';
+import est911 from '../../../assets/automotivo/est-911.jpg';
+import estM3 from '../../../assets/automotivo/est-m3.jpg';
+import estAmg from '../../../assets/automotivo/est-amg.jpg';
+import estRs6 from '../../../assets/automotivo/est-rs6.jpg';
+import estTaycan from '../../../assets/automotivo/est-taycan.jpg';
+import estM4 from '../../../assets/automotivo/est-m4.jpg';
+import detBrasao from '../../../assets/automotivo/det-brasao.jpg';
+import detAmg from '../../../assets/automotivo/det-amg.jpg';
+import detM4 from '../../../assets/automotivo/det-m4.jpg';
+import detRua from '../../../assets/automotivo/det-911-rua.jpg';
+
+// Fonte do hero em duas direções de arte: perfil (telas horizontais) e retrato noturno (telas verticais).
+const heroWidths = [1400, 2100, 2800, 4200];
+const heroAvif = await getImage({ src: heroDesk, format: 'avif', widths: heroWidths });
+const heroWebp = await getImage({ src: heroDesk, format: 'webp', widths: heroWidths });
+const heroJpg = await getImage({ src: heroDesk, format: 'jpg', width: 2100 });
+const heroMobileAvif = await getImage({ src: heroMobile, format: 'avif', widths: [700, 1000, 1400] });
+const heroMobileWebp = await getImage({ src: heroMobile, format: 'webp', widths: [700, 1000, 1400] });
+
+const stock = [
+  { brand: 'Porsche', model: '911 Carrera GTS', year: '2026', hp: '480 cv', accel: '3,2 s', km: '0 km', price: 'R$ 1.289.000', img: est911, pos: '50% 55%', alt: 'Porsche 911 Carrera GTS preto visto de trás, com a faixa de luz traseira acesa' },
+  { brand: 'BMW M', model: 'M3 Competition', year: '2025', hp: '510 cv', accel: '3,9 s', km: '4.200 km', price: 'R$ 829.000', img: estM3, pos: '50% 60%', alt: 'BMW M3 Competition de frente em uma garagem escura, com os faróis acesos' },
+  { brand: 'Mercedes-AMG', model: 'GT Black Series', year: '2022', hp: '730 cv', accel: '3,2 s', km: '8.900 km', price: 'R$ 3.490.000', img: estAmg, pos: '55% 60%', alt: 'Mercedes-AMG GT Black Series preto em um salão, com reflexos na pintura' },
+  { brand: 'Audi Sport', model: 'RS6 Avant', year: '2025', hp: '630 cv', accel: '3,4 s', km: '2.100 km', price: 'R$ 1.049.000', img: estRs6, pos: '55% 62%', alt: 'Audi RS6 Avant preto estacionado diante de portões de garagem' },
+  { brand: 'Porsche', model: 'Taycan Turbo', year: '2025', hp: '707 cv', accel: '2,7 s', km: '1.300 km', price: 'R$ 1.199.000', img: estTaycan, pos: '50% 62%', alt: 'Porsche Taycan Turbo prata em uma rua molhada à noite' },
+  { brand: 'BMW M', model: 'M4 Competition', year: '2025', hp: '530 cv', accel: '3,9 s', km: '1.800 km', price: 'R$ 899.000', img: estM4, pos: '50% 55%', alt: 'BMW M4 Competition de frente, com as luzes diurnas amarelas acesas' },
+];
+
+const specs = [
+  { label: 'Performance', value: 480, unit: 'cv', display: '480', note: 'Motor 3.0 biturbo de seis cilindros contrapostos', gauge: 480 / 800 },
+  { label: '0–100 km/h', value: 3.2, unit: 's', display: '3,2', note: 'Com Sport Chrono e launch control', gauge: 1 - 3.2 / 8 },
+  { label: 'Velocidade máxima', value: 311, unit: 'km/h', display: '311', note: 'Limitada eletronicamente de fábrica', gauge: 311 / 340 },
+];
+
+const standard = [
+  { n: '01', title: 'Procedência', text: 'Cada carro chega com histórico de revisões na rede autorizada, laudo cautelar e documentação conferida por dois especialistas.', img: detBrasao, alt: 'Brasão da Porsche no capô escuro, cortado por reflexos de luz' },
+  { n: '02', title: 'Inspeção de 160 pontos', text: 'Motor, transmissão, freios, eletrônica e carroceria avaliados com o equipamento de diagnóstico da marca antes de entrar no estoque.', img: detAmg, alt: 'Farol de um Mercedes-AMG em pintura fosca, em close' },
+  { n: '03', title: 'Consignação premium', text: 'Vendemos o seu carro com a mesma curadoria: fotografia própria, anúncio seletivo e negociação conduzida pela nossa equipe.', img: detM4, alt: 'Frente de um BMW M4 escuro com as luzes diurnas acesas' },
+  { n: '04', title: 'Entrega sob medida', text: 'Documentação, película e seguro resolvidos antes da entrega, feita no showroom ou no endereço que você escolher.', img: detRua, alt: 'Porsche 911 cinza em uma rua da cidade ao anoitecer' },
+];
+
+const brands = ['Porsche', 'BMW M', 'Mercedes-AMG', 'Audi Sport', 'Porsche', 'BMW M', 'Mercedes-AMG', 'Audi Sport'];
+
+// Publicada dentro do site do Gustavo, a demo mora numa subpasta (--base).
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<Base
+  demo="automotivo"
+  title="Apex Motors · Esportivos e premium com procedência"
+  description="Porsche, BMW M, Mercedes-AMG e Audi Sport com procedência verificada, inspeção de 160 pontos e entrega sob medida. Performance without compromise."
+  siteName="Apex Motors"
+  favicon={`${base}favicons/apex.svg`}
+  ogImage={`${base}og/automotivo.jpg`}
+  themeColor="#09090a"
+>
+  <Fragment slot="head">
+    <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monoUrl} as="font" type="font/woff2" crossorigin />
+  </Fragment>
+
+  <div class="curtain" data-curtain aria-hidden="true">
+    <div class="curtain__top">
+      <p class="curtain__brand"><span>APEX</span></p>
+      <p class="curtain__status"><span data-curtain-label>Loading assets</span><span data-curtain-count>000%</span></p>
+    </div>
+    <span class="curtain__line" data-curtain-line></span>
+    <p class="curtain__meta"><span>São Paulo · BR</span><span>Performance without compromise</span></p>
+  </div>
+
+  <div class="scanbar" aria-hidden="true"><span data-progress></span></div>
+
+  <header class="nav" data-nav>
+    <a class="nav__brand" href="#topo" aria-label="Apex Motors, voltar ao topo"><span class="nav__mark" aria-hidden="true"></span>APEX<small>MOTORS</small></a>
+    <p class="nav__section" aria-hidden="true"><span data-nav-index>01</span><span class="nav__section-name"><span data-nav-name>Featured</span></span></p>
+    <nav class="nav__links" aria-label="Principal">
+      <ul>
+        <li><a class="a-link" href="#estoque">Estoque</a></li>
+        <li><a class="a-link" href="#destaque">Destaque</a></li>
+        <li><a class="a-link" href="#padrao">Padrão Apex</a></li>
+        <li><a class="a-link" href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--ghost nav__cta" href="#contato" data-magnetic="0.25"><span data-magnetic-inner>Agendar test drive</span></a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-btn>
+      <span class="sr-only">Abrir menu</span><span aria-hidden="true" class="nav__menu-bars"></span>
+    </button>
+  </header>
+
+  <div class="menu" id="menu" data-menu hidden>
+    <nav aria-label="Menu">
+      <ol>
+        <li><a href="#estoque" data-menu-link><span>02</span>Estoque</a></li>
+        <li><a href="#destaque" data-menu-link><span>03</span>Destaque</a></li>
+        <li><a href="#padrao" data-menu-link><span>04</span>Padrão Apex</a></li>
+        <li><a href="#contato" data-menu-link><span>05</span>Contato</a></li>
+      </ol>
+    </nav>
+    <p class="menu__foot">Jardim Europa · São Paulo<br />concierge@apexmotors.example</p>
+  </div>
+
+  <main id="conteudo">
+    <!-- 01 · HERO -->
+    <section class="hero" id="topo" data-hero data-section="01" data-name="Featured" aria-labelledby="hero-title">
+      <div class="hero__stage" data-hero-stage>
+        <div class="hero__media" data-hero-media>
+          <div class="hero__box" data-hero-box>
+            <picture class="hero__picture">
+              <source media="(max-aspect-ratio: 1/1)" type="image/avif" srcset={heroMobileAvif.srcSet.attribute} sizes="100vw" />
+              <source media="(max-aspect-ratio: 1/1)" type="image/webp" srcset={heroMobileWebp.srcSet.attribute} sizes="100vw" />
+              <source type="image/avif" srcset={heroAvif.srcSet.attribute} sizes="190vw" />
+              <source type="image/webp" srcset={heroWebp.srcSet.attribute} sizes="190vw" />
+              <img
+                src={heroJpg.src}
+                width="4200"
+                height="2361"
+                alt="Porsche 911 Carrera GTS cinza de perfil, com pinças de freio vermelhas, diante de um prédio escuro"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                class="hero__img"
+              />
+            </picture>
+
+            <svg class="hero__tech" viewBox="0 0 4200 2361" preserveAspectRatio="none" aria-hidden="true" data-hero-tech>
+              <g class="tech tech--dim">
+                <path d="M880 1832 H3320" data-draw />
+                <path d="M1150 1080 H3050 M1150 1050 V1110 M3050 1050 V1110" data-draw />
+                <path d="M1150 1110 V1330 M3050 1110 V1420" class="tech--dash" data-draw />
+                <path d="M3250 1150 V1832 M3220 1150 H3280 M3220 1832 H3280" data-draw />
+              </g>
+              <g class="tech tech--dim">
+                <path d="M1510 1660 V1960 M2600 1660 V1960" class="tech--dash" data-draw />
+                <path d="M1510 1930 H2600 M1510 1900 V1960 M2600 1900 V1960" data-draw />
+              </g>
+              <g class="tech tech--ring">
+                <circle cx="1510" cy="1605" r="262" data-draw />
+                <circle cx="2600" cy="1605" r="262" data-draw />
+                <path d="M1470 1605 H1550 M1510 1565 V1645 M2560 1605 H2640 M2600 1565 V1645" data-draw />
+              </g>
+              <g class="tech tech--red">
+                <rect x="1136" y="1066" width="28" height="28" />
+                <rect x="3036" y="1066" width="28" height="28" />
+              </g>
+            </svg>
+            <span class="tech-label" style="left: 50.6%; top: 43.4%" data-tech-label>4.533 mm · comprimento</span>
+            <span class="tech-label" style="left: 49.2%; top: 84.6%" data-tech-label>2.450 mm · entre-eixos</span>
+            <span class="tech-label tech-label--v" style="left: 78.9%; top: 62%" data-tech-label>1.301 mm</span>
+          </div>
+          <div class="hero__vignette"></div>
+        </div>
+
+        <div class="hud" aria-hidden="true">
+          <span class="hud__corner hud__corner--tl"></span>
+          <span class="hud__corner hud__corner--tr"></span>
+          <span class="hud__corner hud__corner--bl"></span>
+          <span class="hud__corner hud__corner--br"></span>
+          <span class="hud__scan" data-hud-scan></span>
+          <p class="hud__read hud__read--tr" data-scramble>REF AX-0911 · SÉRIE 992.1</p>
+        </div>
+
+        <div class="hero__copy">
+          <p class="hero__eyebrow"><span class="dot" aria-hidden="true"></span><span data-scramble>[01] Em destaque · Porsche</span></p>
+          <h1 class="hero__title" id="hero-title" data-hero-title>
+            <span class="hero__title-line">911 Carrera</span>
+            <span class="hero__title-line">GTS</span>
+          </h1>
+          <p class="hero__tagline" data-hero-tagline>Performance without compromise.</p>
+        </div>
+
+        <div class="hero__bar" data-hero-bar>
+          <dl class="hero__specs">
+            <div><dt>Potência</dt><dd data-scramble>480 cv</dd></div>
+            <div><dt>0–100 km/h</dt><dd data-scramble>3,2 s</dd></div>
+            <div><dt>Vel. máxima</dt><dd data-scramble>311 km/h</dd></div>
+            <div><dt>A partir de</dt><dd data-scramble>R$ 1.289.000</dd></div>
+          </dl>
+          <div class="hero__actions">
+            <a class="btn btn--red" href="#destaque" data-magnetic="0.3" data-cursor="Ver ↗">
+              <span data-magnetic-inner>Ver veículo</span>
+            </a>
+            <a class="btn btn--ghost" href="#estoque" data-magnetic="0.25"><span data-magnetic-inner>Explorar estoque</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · MANIFESTO + TICKER -->
+    <section class="intro" id="sobre" data-section="02" data-name="About">
+      <div class="intro__grid">
+        <p class="tag">[02] About</p>
+        <p class="intro__statement" data-wipe-lines>
+          Curadoria de esportivos e premium para quem sabe exatamente o que está comprando. <span class="hl">Procedência verificada, histórico completo</span> e uma entrega à altura do carro.
+        </p>
+        <dl class="intro__stats">
+          <div><dt>Anos de mercado</dt><dd><span data-count="12">12</span></dd></div>
+          <div><dt>Carros entregues</dt><dd><span data-count="1400">1.400</span>+</dd></div>
+          <div><dt>Pontos de inspeção</dt><dd><span data-count="160">160</span></dd></div>
+        </dl>
+      </div>
+      <div class="ticker" aria-hidden="true" data-ticker>
+        <div class="ticker__track" data-ticker-track>
+          {brands.map((b) => (
+            <span class="ticker__item">
+              {b}
+              <i />
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · ESTOQUE -->
+    <section class="stock" id="estoque" data-section="03" data-name="Inventory" aria-labelledby="stock-title">
+      <header class="stock__head">
+        <p class="tag">[03] Inventory</p>
+        <h2 class="display" id="stock-title" data-chars>Seleção atual</h2>
+        <p class="stock__meta">06 veículos disponíveis<br />Atualizado em 23.09.2026</p>
+      </header>
+
+      <div class="stock__body">
+        <div class="stock__frame" data-stock-frame data-cursor="Ver ↗">
+          {
+            stock.map((c, i) => (
+              <div class="stock__shot" data-stock-shot={i}>
+                <Picture
+                  src={c.img}
+                  formats={['avif', 'webp']}
+                  widths={[700, 1100, 1600, 2000]}
+                  sizes="(min-width: 900px) 56vw, 90vw"
+                  alt={c.alt}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  style={`object-position: ${c.pos}`}
+                />
+              </div>
+            ))
+          }
+          <span class="stock__wipe" data-stock-wipe aria-hidden="true" />
+          <div class="stock__hud" aria-hidden="true">
+            <span class="hud__corner hud__corner--tl" />
+            <span class="hud__corner hud__corner--tr" />
+            <span class="hud__corner hud__corner--bl" />
+            <span class="hud__corner hud__corner--br" />
+            <p class="stock__count"><span data-stock-index>01</span> / 06</p>
+            <p class="stock__label" data-stock-label>Porsche · 911 Carrera GTS</p>
+            <p class="stock__price" data-stock-price>R$ 1.289.000</p>
+          </div>
+        </div>
+
+        <ol class="stock__list" data-stock-list>
+          {
+            stock.map((c, i) => (
+              <li class="car" data-car={i}>
+                <div class="car__media">
+                  <Picture src={c.img} formats={['avif', 'webp']} widths={[600, 1000]} sizes="84vw" alt="" style={`object-position: ${c.pos}`} />
+                </div>
+                <span class="car__index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <p class="car__brand">{c.brand}</p>
+                <h3 class="car__model">{c.model}</h3>
+                <dl class="car__specs">
+                  <div><dt>Ano</dt><dd>{c.year}</dd></div>
+                  <div><dt>Potência</dt><dd>{c.hp}</dd></div>
+                  <div><dt>0–100</dt><dd>{c.accel}</dd></div>
+                  <div><dt>Rodagem</dt><dd>{c.km}</dd></div>
+                </dl>
+                <div class="car__foot">
+                  <p class="car__price">{c.price}</p>
+                  <a class="car__link a-link" href="#contato">Ver veículo <span aria-hidden="true">→</span><span class="sr-only"> {c.brand} {c.model}</span></a>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <p class="stock__hint" aria-hidden="true"><span data-stock-mobile-index>01</span> / 06 <span class="stock__hint-line"></span> Arraste</p>
+    </section>
+
+    <!-- 04 · DESTAQUE -->
+    <section class="feature" id="destaque" data-section="04" data-name="Featured spec" aria-labelledby="feature-title">
+      <div class="feature__stage" data-feature-stage>
+        <div class="feature__media" data-feature-media>
+          <div class="feature__img" data-feature-img>
+            <Picture
+              src={gtsLanterna}
+              formats={['avif', 'webp']}
+              widths={[900, 1400, 2000, 2400]}
+              sizes="(min-width: 900px) 64vw, 100vw"
+              alt="Traseira de um Porsche 911 Carrera GTS na chuva, com a faixa de luz vermelha acesa"
+            />
+          </div>
+          <div class="feature__scrim"></div>
+          <svg class="feature__rule" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
+            <g data-feature-ticks>
+              {Array.from({ length: 101 }, (_, i) => <path d={`M${i * 20} 40 V${i % 5 === 0 ? 14 : 26}`} />)}
+            </g>
+          </svg>
+          <span class="feature__cross feature__cross--a" aria-hidden="true" />
+          <span class="feature__cross feature__cross--b" aria-hidden="true" />
+        </div>
+
+        <div class="feature__panel">
+          <header class="feature__head">
+            <p class="tag">[04] Featured spec</p>
+            <h2 class="feature__title" id="feature-title">911 Carrera GTS <span>2026 · Carmine Red Lines</span></h2>
+          </header>
+
+          <div class="feature__specs">
+            <svg class="gauge" viewBox="0 0 200 200" aria-hidden="true">
+              <path class="gauge__track" d="M40 160 A85 85 0 1 1 160 160" />
+              <path class="gauge__fill" d="M40 160 A85 85 0 1 1 160 160" data-gauge />
+              <g class="gauge__ticks">
+                {Array.from({ length: 25 }, (_, i) => {
+                  const a = ((135 + i * 11.25) * Math.PI) / 180;
+                  const r1 = 96;
+                  const r2 = i % 4 === 0 ? 86 : 91;
+                  return <path d={`M${100 + r1 * Math.cos(a)} ${100 + r1 * Math.sin(a)} L${100 + r2 * Math.cos(a)} ${100 + r2 * Math.sin(a)}`} />;
+                })}
+              </g>
+            </svg>
+            {
+              specs.map((s, i) => (
+                <div class="spec" data-spec={i} data-gauge-value={s.gauge}>
+                  <p class="spec__label">
+                    <span class="spec__in"><span class="spec__n">0{i + 1}</span> {s.label}</span>
+                  </p>
+                  <p class="spec__value">
+                    <span class="spec__num" data-spec-num={s.value}>{s.display}</span>
+                    <span class="spec__unit">{s.unit}</span>
+                  </p>
+                  <p class="spec__note"><span class="spec__in">{s.note}</span></p>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="feature__foot">
+            <ol class="feature__steps" aria-hidden="true">
+              {specs.map(() => <li><span /></li>)}
+            </ol>
+            <a class="btn btn--red" href="#contato" data-magnetic="0.3"><span data-magnetic-inner>Reservar o GTS</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · PADRÃO APEX: rolagem horizontal controlada -->
+    <section class="standard" id="padrao" data-section="05" data-name="Apex standard" aria-labelledby="standard-title">
+      <div class="standard__pin" data-standard-pin>
+        <div class="standard__track" data-standard-track>
+          <div class="standard__intro">
+            <p class="tag">[05] Apex standard</p>
+            <h2 class="display standard__title" id="standard-title">O padrão<br />Apex</h2>
+            <p class="standard__lede">Quatro etapas que todo carro atravessa antes de receber a nossa placa de procedência.</p>
+          </div>
+          {
+            standard.map((p) => (
+              <article class="panel" data-panel>
+                <div class="panel__media">
+                  <div class="panel__img" data-panel-img>
+                    <Picture src={p.img} formats={['avif', 'webp']} widths={[600, 1000, 1400]} sizes="(min-width: 900px) 30vw, 80vw" alt={p.alt} />
+                  </div>
+                </div>
+                <div class="panel__copy">
+                  <span class="panel__n" aria-hidden="true">{p.n}</span>
+                  <h3 class="panel__title">{p.title}</h3>
+                  <p class="panel__text">{p.text}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+        <div class="standard__progress" aria-hidden="true">
+          <span class="standard__bar"><span data-standard-bar /></span>
+          <span class="standard__count">Scroll ⟶</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · CTA -->
+    <section class="cta" id="contato" data-section="06" data-name="Contact" aria-labelledby="cta-title">
+      <div class="cta__bg" aria-hidden="true">
+        <div class="cta__trails">
+          <span /><span /><span /><span /><span />
+        </div>
+      </div>
+      <p class="tag">[06] Contact</p>
+      <h2 class="cta__title" id="cta-title" data-cta-title>
+        <span class="cta__line"><span>Seu próximo</span></span>
+        <span class="cta__line"><span>carro não</span></span>
+        <span class="cta__line"><span>deveria parecer</span></span>
+        <span class="cta__line"><span><em>comum.</em></span></span>
+      </h2>
+      <div class="cta__actions">
+        <a class="btn btn--red btn--lg" href="#estoque" data-magnetic="0.35" data-cursor="Go ↗"><span data-magnetic-inner>Explorar estoque</span></a>
+        <a class="btn btn--ghost btn--lg" href="mailto:concierge@apexmotors.example" data-magnetic="0.25"><span data-magnetic-inner>Falar com um consultor</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__cols">
+      <div>
+        <h3>Showroom</h3>
+        <p>Jardim Europa<br />São Paulo · SP</p>
+      </div>
+      <div>
+        <h3>Horário</h3>
+        <p>Seg a sex · 9h às 19h<br />Sáb · 10h às 16h</p>
+      </div>
+      <div>
+        <h3>Concierge</h3>
+        <p><a class="a-link" href="mailto:concierge@apexmotors.example">concierge@apexmotors.example</a><br />+55 11 0000-0000</p>
+      </div>
+      <div>
+        <h3>Navegação</h3>
+        <p><a class="a-link" href="#estoque">Estoque</a><br /><a class="a-link" href="#destaque">Destaque</a></p>
+      </div>
+    </div>
+    <p class="footer__word" aria-hidden="true" data-footer-word>APEX</p>
+    <div class="footer__base">
+      <p>© 2026 Apex Motors · Concessionária fictícia criada para portfólio. Marcas e modelos pertencem aos respectivos fabricantes. Fotos: Unsplash.</p>
+      <a class="a-link" href="#topo">Top ↑</a>
+    </div>
+  </footer>
+</Base>
+
+<script>
+  import '../../../demos/automotivo/automotivo.ts';
+</script>
